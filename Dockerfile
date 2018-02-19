@@ -25,13 +25,15 @@ RUN apt-get install -qq ftp \
                         python3 \
                         libcfitsio-bin libcfitsio-dev \
                         libgtk2.0-dev \
-                        libgtk2.0  && apt-get clean
+                        libgtk2.0 sudo less && apt-get clean
 
 RUN useradd -m pulsar && echo "pulsar:pulsar" | chpasswd && adduser pulsar sudo
 
-USER pulsar
-
 COPY .bashrc /home/pulsar/.bashrc
+
+RUN chown -R pulsar:pulsar /home/pulsar /home/pulsar/.bashrc
+
+USER pulsar
 
 RUN cd /home/pulsar && pwd && id && . /home/pulsar/.bashrc && mkdir pulsar_software && cd pulsar_software
 
@@ -50,3 +52,14 @@ RUN ls
 RUN . admin/gildas-env.sh && \
     make && make install
 
+RUN echo export GAG_ROOT_DIR=/home/pulsar/pulsar_software/gildas-exe-may17c >> /home/pulsar/.bashrc
+
+RUN echo export GAG_EXEC_SYSTEM=x86_64-ubuntu16.04-gfortran >> /home/pulsar/.bashrc
+
+RUN echo '. $GAG_ROOT_DIR/etc/bash_profile' >> /home/pulsar/.bashrc
+
+WORKDIR /home/pulsar/
+
+RUN less ~/.bashrc
+
+RUN . /home/pulsar/.bashrc && class -h

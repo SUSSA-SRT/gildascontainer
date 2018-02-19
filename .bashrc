@@ -23,3 +23,5 @@ export OSTYPE=linux
 # Some Presto executables match sigproc executables so keep separate -
 # all other executables are found in $ASTROSOFT/bin
 export PATH=$PATH:$ASTROSOFT/bin
+
+export PFILES=/home/pulsar/pfiles
