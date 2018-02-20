@@ -58,8 +58,18 @@ RUN echo export GAG_EXEC_SYSTEM=x86_64-ubuntu16.04-gfortran >> /home/pulsar/.bas
 
 RUN echo '. $GAG_ROOT_DIR/etc/bash_profile' >> /home/pulsar/.bashrc
 
+RUN chown -R pulsar:pulsar /home/pulsar
+
 WORKDIR /home/pulsar/
 
 RUN less ~/.bashrc
 
 RUN . /home/pulsar/.bashrc && class -h
+
+USER root
+
+RUN echo "pulsar ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/pulsar && \
+    chmod 0440 /etc/sudoers.d/pulsar
+
+USER pulsar
+
